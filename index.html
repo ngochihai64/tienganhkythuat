@@ -280,7 +280,8 @@ function buildAll(){
    DATA.cats.map(function(c){return '<button type="button" class="cat'+(curCat===c.id?' on':'')+'" data-c="'+esc(c.id)+'"><span class="e">'+esc(c.em)+'</span><span class="ct">'+esc(c.vn)+'<small>('+esc(c.en)+') · '+(cnt[c.id]||0)+'</small></span></button>'}).join('');
   [].forEach.call($('cats').querySelectorAll('.cat'),function(b){b.onclick=function(){curCat=b.dataset.c;[].forEach.call($('cats').querySelectorAll('.cat'),function(x){x.classList.toggle('on',x===b)});filter()}});
   IDX=DATA.items.map(function(it){return fold([it.en,it.vn,it.alt,it.vi].join(' '))});
-  $('grid').innerHTML=DATA.items.map(function(it,i){
+  var ORD=DATA.items.map(function(_,i){return i}).sort(function(a,b){return String(DATA.items[a].en||'').localeCompare(String(DATA.items[b].en||''),'en',{sensitivity:'base',numeric:true})||a-b});
+  $('grid').innerHTML=ORD.map(function(i){var it=DATA.items[i];
     return '<article class="card" data-i="'+i+'" tabindex="0"><div class="pic">'+pic(it)+'</div><div class="info"><div class="row"><div><div class="en">'+esc(it.en)+'</div><div class="ipa">'+esc(it.ipa)+'</div><div class="vi">🗣️ '+esc(it.vi)+'</div></div><button class="spk" type="button" aria-label="Nghe đọc">🔊</button></div><div class="vn">'+esc(it.vn)+'</div><div class="use">'+esc(it.use)+'</div></div></article>'}).join('');
   [].forEach.call($('grid').querySelectorAll('.card'),function(el){
     var i=+el.dataset.i;
